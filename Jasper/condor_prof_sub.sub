@@ -1,0 +1,32 @@
+universe = vanilla
+log = rnn_prof_$(Cluster).log
+error = rnn_prof_$(CLuster).err
+
+seed = 0
+det = 0
+executable = condor_prof_script.sh
+error = rnn_prof_$(seed)_$(run)_det$(det)_$(Cluster)_$(Process).err
+output = rnn_prof_$(seed)_$(run)_det$(det)_$(Cluster)_$(Process).out
+
+should_tranfer_files = YES
+when_to_transfer_output = ON_EXIT
+transfer_input_files = http://proxy.chtc.wisc.edu/SQUID/chtc/python36.tar.gz, http://proxy.chtc.wisc.edu/SQUID/intan/packages.tar.gz, http://proxy.chtc.wisc.edu/SQUID/intan/data_needed.tar.gz, scripts.tar.gz, seq2seq.tar.gz, train.py, translate.py, run.sh, run_and_time.sh
+
++WantGPULab = true
++GPUJobLength = "short"
+requirements = (CUDACapability == 6.0)
+
+request_gpus = 1
+request_cpus = 2
+request_memory = 128GB
+request_disk = 10GB
+
+seed = 0
+det = 0
+arguments = $(seed) $(det)
+queue 1
+
+seed = 0
+det = 1
+arguments = $(seed) $(det)
+queue 1
